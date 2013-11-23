@@ -10,13 +10,23 @@
     <svg></svg>
     <script>
     var score = 0;
-    d3.select('body').append('div').text(score);
+    var highScore = 0;
+    d3.select('body').append('div').attr("class", "score").text("Current Score: " + score);
+    d3.select('body').append('div').attr("class", "highScore").text("High Score: " + highScore);
     var scoreTimer = function() {
       setInterval(function() {
       score++;
-      d3.select('div')
-      .text(score);
+      d3.select('.score')
+      .text("Current Score: " + score);
+      if (collision()) {
+        if (score > highScore) {
+          highScore = score;
+        }
+        score = 0;
+        d3.select('.highScore').text("High Score: " + highScore);
+      }
       }, 50);
+
     }();
 
     var width = 800;
@@ -25,7 +35,7 @@
     svg.attr('width', width).attr("height", height);
 
     var data = [{cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}, {cx: Math.random() * width, cy: Math.random() * height, r: 10, fill: 'black'}]
-    var circle = svg.selectAll("circle").data(data);
+    var enemies = svg.selectAll("circle").data(data);
 
     var loop = function(){
       d3.select(this)
@@ -35,7 +45,7 @@
       .each("end", loop);
     };
 
-    circle.enter().append("circle")
+    enemies.enter().append("circle")
       .attr("cx", function(d){ return d.cx; })
       .attr("cy", function(d){ return d.cy; })
       .attr("r", function(d){ return d.r; })
@@ -61,9 +71,24 @@
       .attr("fill", "red")
       .call(drag);
 
-      // d3.select('body').append('div')
-      // .text(score);
-
+      var collision = function(){
+        var playerX = d3.select(".player").attr("cx");
+        var playerY = d3.select(".player").attr("cy");
+        var enemiesX = [];
+        var enemiesY = [];
+        enemies.each( function(){
+          enemiesX.push(d3.select(this).attr("cx"));
+        });
+        enemies.each( function(){
+          enemiesY.push(d3.select(this).attr("cy"));
+        });
+        for (var i = 0; i < enemiesY.length; i++) {
+          if ((playerX) > (enemiesX[i] - 10) && (playerY) > (enemiesY[i] - 10) && (playerX) < (enemiesX[i] + 10) && (playerY) < (enemiesY[i] + 10)) {
+            return true;
+          }
+        }
+       return false;
+      }
 
     </script>
   </body>
