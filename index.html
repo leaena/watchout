@@ -13,6 +13,9 @@
         <pattern id="image" x="0" y="0" patternUnits="objectBoundingBox" height="1" width="1">
           <image class="spin" x="0" y="0" height="20" width="20" xlink:href="nenemies.png"></image>
         </pattern>
+        <pattern id="ninja" x="0" y="0" patternUnits="objectBoundingBox" height="1" width="1">
+          <image x="0" y="0" height="20" width="20" xlink:href="ninja.gif"></image>
+        </pattern>
       </defs>
     </svg>
     <script>
@@ -58,7 +61,7 @@
 
     var loop = function(){
       d3.select(this)
-      .transition().ease('back-in').duration(1000)
+      .transition().ease('back-in').duration(1500)
       .attr("cx", function(d){ return Math.random() * width; })
       .attr("cy", function(d){ return Math.random() * height; })
       .each("end", loop);
@@ -70,7 +73,7 @@
       .attr("cy", function(d){ return Math.random() * width; })
       .attr("r", function(d){ return 10; })
       .attr("fill", function(d){ return "url(#image)"; })
-    .transition().duration(1000)
+    .transition().duration(1500)
       .attr("cx", function(d){ return Math.random() * width; })
       .attr("cy", function(d){ return Math.random() * height; })
       .each("end", loop);
@@ -79,6 +82,16 @@
         .on("drag", function(d,i) {
             d.cx += d3.event.dx
             d.cy += d3.event.dy
+            if(d.cx > width-10){
+              d.cx = width-10;
+            } else if(d.cx < 10){
+              d.cx = 10;
+            }
+            if(d.cy > height-10){
+              d.cy = height-10;
+            } else if(d.cy < 10){
+              d.cy = 10;
+            }
             d3.select(this).attr("cx", d.cx).attr("cy", d.cy)
         });
 
@@ -88,7 +101,7 @@
       .attr("cx", width/2)
       .attr("cy", height/2)
       .attr("r", 10)
-      .attr("fill", "red")
+      .attr("fill", "url(#ninja)")
       .call(drag);
 
       var collision = function(){
@@ -109,7 +122,6 @@
         }
        return false;
       }
-
     </script>
   </body>
 </html>
