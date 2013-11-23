@@ -35,6 +35,25 @@
       .attr("cy", function(d){ return Math.random() * height; })
       .each("end", loop);
 
+       var drag = d3.behavior.drag()
+        .on("drag", function(d,i) {
+            d.cx += d3.event.dx
+            d.cy += d3.event.dy
+            d3.select(this).attr("cx", d.cx).attr("cy", d.cy)
+        });
+
+      d3.select('svg').append('circle')
+      .data([ {"cx":width/2, "cy":height/2} ])
+      .attr('class', 'player')
+      .attr("cx", width/2)
+      .attr("cy", height/2)
+      .attr("r", 10)
+      .attr("fill", "red")
+      .call(drag);
+      // var player = d3.select('svg');
+      // player.behavior.drag();
+
+
     </script>
   </body>
 </html>
