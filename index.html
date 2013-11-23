@@ -9,6 +9,16 @@
   <body>
     <svg></svg>
     <script>
+    var score = 0;
+    d3.select('body').append('div').text(score);
+    var scoreTimer = function() {
+      setInterval(function() {
+      score++;
+      d3.select('div')
+      .text(score);
+      }, 50);
+    }();
+
     var width = 800;
     var height = 600;
     var svg = d3.select('svg');
@@ -50,8 +60,9 @@
       .attr("r", 10)
       .attr("fill", "red")
       .call(drag);
-      // var player = d3.select('svg');
-      // player.behavior.drag();
+
+      // d3.select('body').append('div')
+      // .text(score);
 
 
     </script>
